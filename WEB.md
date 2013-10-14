@@ -24,58 +24,26 @@ Enter the virtual environment. Essentially, a virtualenv is a python sandbox. It
 
 Here are the steps to using virtual environments:
 
-1. Create an environment.
+1. Create an environment. The command you are looking for is `virtualenv`.
 This basically creates a copy of python and all of the essential modules and puts it in a directory of your choice. Creation of a virtual environment is _free_. This means you should make as many as you need, usually one per project. Each of your projects will have different requirements, so don't be stingy and try to use one env for all of them. The directory you put your environment in is usually named 'env' under the top level of your project.
-2. Activate your environment.
+2. Activate your environment. `source env/bin/activate` where env is whatever you called your virtualenv when you created it.
 Once an environment is created, you need to activate it. Unless you activate an environment, it simply sits there, sad and alone. But more importantly, unless you activate it, you'll continue to use the OS-specific versions of python and its modules.
 3. Install your modules.
-Even if you don't appreciate the utility of being able to cordon off your python configuration, at the very least, you'll now enjoy the ability to install modules without having to ask for permission. Once your environment is activated, you can install new python modules with impunity. Note: impunity is not the name of the python module installer, that program is actually called pip.
+Even if you don't appreciate the utility of being able to cordon off your python configuration, at the very least, you'll now enjoy the ability to install modules without having to ask for permission. Once your environment is activated, you can install new python modules with impunity. Note: impunity is not the name of the python module installer, that program is actually called `pip`.
 4. Work!
 As you write and test your code, make sure to run it inside a terminal that has a virtualenv activated. It is very easy to forget this. If your program raises an ImportError when running, you're probably not inside the activated environment. When you activate an environment, it leaves a visual cue on your command prompt, make sure to check for it if things aren't going correctly.
-5. Deactivate your environment
+5. Deactivate your environment. The command to do this is `deactivate`.
 Just kidding, unless you're specifically going to activate another environment for a different project, don't worry about deactivating. Just open another window for that project.
 
-### Your Mission, Should You Choose To Accept It (You don't really have a choice here)
-There exists a python module named 'howdoi'. Importing it from inside a python program does nothing, but it _does_ install a useful program that can answer programming questions from the command line.
-
-First, verify that 'howdoi' is not installed on your machine:
-
-    Meringue:sql_lesson chriszf$ howdoi
-    -bash: /usr/local/bin/howdoi: No such file or directory
-
-Your task is to create a new virtual environment, use pip to install howdoi, and ask howdoi a programming question:
-
-    (env)Meringue:sql_lesson chriszf$ howdoi tweet using python
-    from Twython import Twython
-
-    TWITTER_APP_KEY = 'xxxxx' #supply the appropriate value
-    TWITTER_APP_KEY_SECRET = 'xxxxx' 
-    TWITTER_ACCESS_TOKEN = 'xxxxxx'
-    TWITTER_ACCESS_TOKEN_SECRET = 'xxxxx'
-
-    t = Twython(app_key=TWITTER_APP_KEY, 
-                app_secret=TWITTER_APP_KEY_SECRET, 
-                oauth_token=TWITTER_ACCESS_TOKEN, 
-                oauth_token_secret=TWITTER_ACCESS_TOKEN_SECRET)
-
-    search = t.search(q='#omg',   #**supply whatever query you want here**
-                      count=100)
-
-    tweets = search['statuses']
-
-    for tweet in tweets:
-      print tweet['id_str'], '\n', tweet['text'], '\n\n\n'
-
-And this choice example:
-
-    (env)Meringue:sql_lesson chriszf$ howdoi create a virtualenv
-    pip freeze > env_modules.txt
-    virtualenv my_env && cd my_env && source bin/activate
-    pip install -r ../env_modules.txt
-
-The details of creating a virtual environment, activating it and installing a module with pip are left as an exercise to the reader. (Hint: look up what && does in bash then re-read the above example).
-
 Once you can install modules as you please, activate your virtual environment then install the flask module using pip.
+
+#### Your virtualenv and playing nice with github
+
+As a general rule, you don't want to push your virtual environment to github. You don't really want it included in your repository for a lot of reasons, and it can easily be recreated. So let's learn a little bit about how to do that.
+
+By now, you've probably heard tell of a thing called a `.gitignore` file. Feel free to look that up. It's the thing you need here. You want to include the name of your environment in your `.gitignore` file so that git doesn't even try to store it in your repository. "But!" I can hear you say, "What if I want to have my environment on a different computer!?" Well, it couldn't be simpler. If you use the `pip freeze` command while in your activated environment, you'll see all the modules you installed in your virtualenv. Your environment must be active for this to be an accurate reflection of your virtualenv. To store this information for retrieval later, you can redirect the output to a text file, i.e. `pip freeze > requirements.txt`
+
+By including `requirements.txt` and `.gitignore` in your repository, it makes it trivial to recreate your virtualenv on another computer. To do this, just clone your repository (that already has your `requirements.txt` file in it) to wherever you want it to be. Then, create a virtualenv as above. To install all the same packages as you had before, activate your fresh virtualenv, then use `pip install -r requirements.txt`. And you're good to go! See? Wasn't that easy?
 
 Sipping From the Flask
 ======================
